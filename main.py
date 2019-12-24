@@ -4,10 +4,10 @@ import requests
 import datetime
 from commands import commands
 import time
-import random
 
-greet_bot = BotHandler(token)
-greetings = ('здравствуй', 'привет', 'ку', 'здорово')
+token = '1065331036:AAGk2T8CdUuxV9Z3ycZKRMnG_jmqvrJnH-k'
+
+curr_bot = BotHandler(token)
 
 
 now = datetime.datetime.now()
@@ -19,9 +19,9 @@ def main():
     hour = now.hour
 
     while True:
-        greet_bot.get_updates(new_offset)
+        curr_bot.get_updates(new_offset)
 
-        last_update = greet_bot.get_last_update()
+        last_update = curr_bot.get_last_update()
 
         if last_update is None:
             continue
@@ -36,16 +36,11 @@ def main():
 
         print(last_chat_text)
 
-        if last_chat_text.lower() in greetings and today == now.day and 6 <= hour < 12:
-            greet_bot.send_message(last_chat_id, 'Доброе утро, {}'.format(last_chat_name))
-        elif last_chat_text.lower() in greetings and today == now.day and 12 <= hour < 17:
-            greet_bot.send_message(last_chat_id, 'Добрый день, {}'.format(last_chat_name))
-        elif last_chat_text.lower() in greetings and today == now.day and 17 <= hour < 23:
-            greet_bot.send_message(last_chat_id, 'Добрый вечер, {}'.format(last_chat_name))
+
 
         t = last_chat_text.split(' ')
         if t[0] in commands:
-            greet_bot.send_message(last_chat_id, commands[t[0]](last_chat_id, t))
+            curr_bot.send_message(last_chat_id, commands[t[0]](last_chat_id, t))
 
 
         new_offset = last_update_id + 1
